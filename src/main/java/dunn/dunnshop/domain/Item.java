@@ -16,6 +16,6 @@ public class Item {
     private Integer itemPrice;
     @Column(name = "item_description", length = 100)
     private String itemDescription;
-    @Column(name = "item_category", length = 20)
+    @Column(name = "item_category", nullable = false, length = 20)
     private String itemCategory;
 }
