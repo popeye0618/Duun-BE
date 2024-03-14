@@ -11,9 +11,13 @@ import dunn.dunnshop.repository.OrderRepository;
 import dunn.dunnshop.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.Response;
+import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -30,17 +34,56 @@ public class ShopController {
     private final ItemRepository itemRepository;
     private final OrderRepository orderRepository;
 
+    @GetMapping("users")
+    public ResponseEntity getUser() {
+        List<String> usernames = userRepository.findAll().stream()
+                .map(user -> user.getUsername()).toList();
+        log.info("userList = {}", usernames);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+
     @PostMapping("users/save")
-    public void addUser(@RequestBody User user) {
+    public ResponseEntity<String> addUser(@RequestBody User user) {
         userRepository.save(user);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+
+    @PostMapping("users/update/{id}")
+    public ResponseEntity<String> updateUser(@PathVariable Long id, @RequestBody User updateUser) {
+        User findUser = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found: " + id));
+
+        BeanUtils.copyProperties(updateUser, findUser, "id");
+        userRepository.save(findUser);
+
+        return ResponseEntity.status(HttpStatus.OK).body("Update Success!!");
+    }
+
+    @GetMapping("items")
+    public ResponseEntity<String> getItem() {
+        List<String> items = itemRepository.findAll().stream()
+                .map(item -> item.getItemName()).toList();
+        log.info("userList = {}", items);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+
+    @PostMapping("items/update/{id}")
+    public ResponseEntity<String> updateItem(@PathVariable Long id, @RequestBody Item updateItem) {
+        Item findItem = itemRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Item not found: " + id));
+
+        BeanUtils.copyProperties(updateItem, findItem, "id");
+        itemRepository.save(findItem);
+        return ResponseEntity.status(HttpStatus.OK).body("Update Success!!");
     }
 
     @PostMapping("items/save")
-    public void addItem(@RequestBody Item item) {
+    public ResponseEntity<String> addItem(@RequestBody Item item) {
         itemRepository.save(item);
+        return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 
-    @PostMapping("orders/save")
+    @PostMapping("orders")
     public ResponseEntity<Map<String, Object>> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
         Order order = new Order();
         User user = userRepository.findById(orderRequestDto.getUserId())
