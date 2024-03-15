@@ -16,10 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -67,6 +64,14 @@ public class ShopController {
         return ResponseEntity.status(HttpStatus.OK).body("Success");
     }
 
+    @DeleteMapping("users/{id}")
+    public ResponseEntity<String> removeUser(@PathVariable Long id) {
+        User findUser = userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found: " + id));
+
+        userRepository.delete(findUser);
+        return ResponseEntity.status(HttpStatus.OK).body("Delete Success!");
+    }
+
     @PostMapping("items/update/{id}")
     public ResponseEntity<String> updateItem(@PathVariable Long id, @RequestBody Item updateItem) {
         Item findItem = itemRepository.findById(id)
@@ -81,6 +86,14 @@ public class ShopController {
     public ResponseEntity<String> addItem(@RequestBody Item item) {
         itemRepository.save(item);
         return ResponseEntity.status(HttpStatus.OK).body("Success");
+    }
+
+    @DeleteMapping("items/{id}")
+    public ResponseEntity<String> removeItem(@PathVariable Long id) {
+        Item findItem = itemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found: " + id));
+
+        itemRepository.delete(findItem);
+        return ResponseEntity.status(HttpStatus.OK).body("Delete Success!");
     }
 
     @PostMapping("orders")
