@@ -3,7 +3,9 @@ package dunn.dunnshop.domain;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
@@ -13,6 +15,7 @@ import java.util.List;
 import static jakarta.persistence.FetchType.*;
 
 @Entity
+@NoArgsConstructor
 @Getter @Setter
 @Table(name = "orders")
 @JsonIdentityInfo(
