@@ -33,6 +33,10 @@ public class User {
     private String email;
     @Column(nullable = false, length = 100)
     private String address;
+    @Column(nullable = false, length = 10)
+    private String level;
+    @Column(nullable = false)
+    private int point;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
