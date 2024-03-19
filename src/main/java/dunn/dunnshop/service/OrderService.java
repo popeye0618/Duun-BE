@@ -5,17 +5,23 @@ import dunn.dunnshop.domain.Item;
 import dunn.dunnshop.domain.Order;
 import dunn.dunnshop.domain.OrderDetail;
 import dunn.dunnshop.domain.User;
+import dunn.dunnshop.dto.OrderDto;
 import dunn.dunnshop.dto.OrderRequestDto;
 import dunn.dunnshop.repository.ItemRepository;
 import dunn.dunnshop.repository.OrderRepository;
 import dunn.dunnshop.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class OrderService {
@@ -46,5 +52,18 @@ public class OrderService {
         order.setOrderDate(LocalDateTime.now());
 
         return orderRepository.save(order);
+    }
+
+//    public List<OrderDto> getOrders(Long id) {
+//        Optional<Order> orders = orderRepository.findById(id);
+//        List<OrderDto> orderDtos = orders.stream().map(order -> new OrderDto(order.getId(), order.getOrderDate()))
+//                .collect(Collectors.toList());
+//
+//        return orderDtos;
+//    }
+
+    @Transactional
+    public Optional<Order> getOrders(Long id) {
+        return orderRepository.findById(id);
     }
 }

@@ -2,6 +2,7 @@ package dunn.dunnshop.controller;
 
 import dunn.dunnshop.domain.Order;
 import dunn.dunnshop.dto.OrderDetailResponseDto;
+import dunn.dunnshop.dto.OrderDto;
 import dunn.dunnshop.dto.OrderRequestDto;
 import dunn.dunnshop.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -13,15 +14,30 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/orders")
 public class OrderController {
 
     private final OrderService orderService;
 
-    @PostMapping("/order")
+//    @GetMapping("/{id}")
+//    public List<OrderDto> getOrderById(@PathVariable Long id) {
+//        List<OrderDto> orders = orderService.getOrders(id);
+//        return orders;
+//    }
+
+    @GetMapping("/{id}")
+    public Optional<Order> getOrderById(@PathVariable Long id) {
+        Optional<Order> orders = orderService.getOrders(id);
+        return orders;
+    }
+
+    @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Map<String, Object> createOrder(@RequestBody OrderRequestDto orderRequestDto) {
         Order savedOrder = orderService.createOrder(orderRequestDto);
