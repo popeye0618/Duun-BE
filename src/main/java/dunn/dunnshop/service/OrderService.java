@@ -62,7 +62,7 @@ public class OrderService {
 //        return orderDtos;
 //    }
 
-    @Transactional
+
     public Optional<Order> getOrders(Long id) {
         return orderRepository.findById(id);
     }
