@@ -1,6 +1,7 @@
 package dunn.dunnshop.controller;
 
 import dunn.dunnshop.domain.Order;
+import dunn.dunnshop.domain.User;
 import dunn.dunnshop.dto.OrderDetailResponseDto;
 import dunn.dunnshop.dto.OrderDto;
 import dunn.dunnshop.dto.OrderRequestDto;
@@ -25,17 +26,12 @@ public class OrderController {
 
     private final OrderService orderService;
 
-//    @GetMapping("/{id}")
-//    public List<OrderDto> getOrderById(@PathVariable Long id) {
-//        List<OrderDto> orders = orderService.getOrders(id);
-//        return orders;
-//    }
-
     @GetMapping("/{id}")
-    public Optional<Order> getOrderById(@PathVariable Long id) {
-        Optional<Order> orders = orderService.getOrders(id);
+    public List<OrderDto> getOrderById(@PathVariable Long id) {
+        List<OrderDto> orders = orderService.getOrders(id);
         return orders;
     }
+
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -53,5 +49,14 @@ public class OrderController {
 
         return response;
     }
+
+    @PutMapping("")
+    public Map<String, Object> deleteOrder(@RequestBody OrderRequestDto orderRequestDto) {
+        Long userId = orderRequestDto.getUserId();
+        List<OrderDto> orders = orderService.getOrders(userId);
+
+    }
+
+
 
 }

@@ -30,6 +30,7 @@ public class OrderService {
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
 
+    @Transactional
     public Order createOrder(OrderRequestDto orderRequestDto) {
         Order order = new Order();
         User user = userRepository.findById(orderRequestDto.getUserId())
@@ -54,16 +55,11 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
-//    public List<OrderDto> getOrders(Long id) {
-//        Optional<Order> orders = orderRepository.findById(id);
-//        List<OrderDto> orderDtos = orders.stream().map(order -> new OrderDto(order.getId(), order.getOrderDate()))
-//                .collect(Collectors.toList());
-//
-//        return orderDtos;
-//    }
+    public List<OrderDto> getOrders(Long id) {
+        Optional<Order> orders = orderRepository.findById(id);
+        List<OrderDto> orderDtos = orders.stream().map(order -> new OrderDto(order.getId(), order.getOrderDate()))
+                .collect(Collectors.toList());
 
-
-    public Optional<Order> getOrders(Long id) {
-        return orderRepository.findById(id);
+        return orderDtos;
     }
 }
