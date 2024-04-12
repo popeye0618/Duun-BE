@@ -50,13 +50,6 @@ public class OrderController {
         return response;
     }
 
-    @PutMapping("")
-    public Map<String, Object> deleteOrder(@RequestBody OrderRequestDto orderRequestDto) {
-        Long userId = orderRequestDto.getUserId();
-        List<OrderDto> orders = orderService.getOrders(userId);
-
-    }
-
 
 
 }
