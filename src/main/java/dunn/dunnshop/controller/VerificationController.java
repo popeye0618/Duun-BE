@@ -23,7 +23,11 @@ public class VerificationController {
     }
 
     @GetMapping("/login/code")
-    public boolean verifyCode(@RequestBody VerifyDto data) {
-        return verificationService.verifyCode(data.getEmail(), data.getCode());
+    public String verifyCode(@RequestBody VerifyDto data) {
+        if (verificationService.verifyCode(data.getEmail(), data.getCode())) {
+            return "이메일 인증 성공!!";
+        } else {
+            return "인증번호가 다릅니다.";
+        }
     }
 }

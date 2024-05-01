@@ -1,6 +1,8 @@
 package dunn.dunnshop.controller;
 
 import dunn.dunnshop.domain.User;
+import dunn.dunnshop.dto.ChatBotRequestDto;
+import dunn.dunnshop.dto.LoginForm;
 import dunn.dunnshop.response.MyPageDto;
 import dunn.dunnshop.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -61,13 +63,19 @@ public class UserController {
         }
     }
 
-    @GetMapping("/login")
-    public String login(@RequestParam String userId, @RequestParam String password) {
-        boolean success = userService.login(userId, password);
+    @PostMapping("/login")
+    public String login(@RequestBody LoginForm form) {
+        boolean success = userService.login(form.getUserId(), form.getPassword());
         if (success) {
             return "Login Success";
         } else {
             return "Login Failed";
         }
+    }
+
+    @PostMapping("/chatBots")
+    public String chatBots(@RequestBody ChatBotRequestDto form) {
+        log.info("check={}", form.getChatting());
+        return form.getChatting() + "성공!!";
     }
 }

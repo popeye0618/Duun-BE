@@ -34,9 +34,9 @@ public class User {
     @Column(nullable = false, length = 100)
     private String address;
     @Column(nullable = false, length = 10)
-    private String level;
+    private String level = "성층권";
     @Column(nullable = false)
-    private int point;
+    private int point = 0;
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders = new ArrayList<>();
